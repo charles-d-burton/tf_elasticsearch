@@ -91,3 +91,9 @@ variable "subnets" {
   description = "Subnets to place ES nodes in when using VPC"
   default     = []
 }
+
+variable "vpc_id" {
+  type        = "string"
+  description = "The vpc of the subnets and security groups"
+  default     = ""
+}

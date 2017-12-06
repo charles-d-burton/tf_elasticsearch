@@ -65,6 +65,7 @@ resource "aws_elasticsearch_domain" "elk_vpc" {
 resource "aws_security_group" "vpc_security_group" {
   name        = "tf-vpc-elasticsearch"
   description = "Allow inbound traffic to ES"
+  vpc_id      = "${var.vpc_id}"
 
   ingress {
     from_port   = 0
