@@ -12,7 +12,7 @@ data "aws_iam_policy_document" "elk_cluster" {
     principals {
       type = "AWS"
 
-      identifiers = ["${var.es_log_role_arns}"]
+      identifiers = ["${var.es_publish_role_arns}"]
     }
 
     resources = [
