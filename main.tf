@@ -56,7 +56,21 @@ resource "aws_elasticsearch_domain" "elk_vpc" {
   }
 
   vpc_options {
-    subnet_ids = ["${var.subnets}"]
+    security_group_ids = ["${aws_security_group.vpc_security_group.id}"]
+    subnet_ids         = ["${var.subnets}"]
+  }
+}
+
+#For VPC clusters, use a security group to control access
+resource "aws_security_group" "vpc_security_group" {
+  name        = "tf-vpc-elasticsearch"
+  description = "Allow inbound traffic to ES"
+
+  ingress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["${var.ip_whitelist}"]
   }
 }
 
