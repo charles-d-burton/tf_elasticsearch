@@ -56,7 +56,7 @@ resource "aws_elasticsearch_domain" "elk_vpc" {
   }
 
   vpc_options {
-    subnet_ids = "${var.subnets}"
+    subnet_ids = ["${var.subnets}"]
   }
 }
 
