@@ -156,13 +156,6 @@ data "aws_iam_policy_document" "elk_cluster_vpc" {
       type        = "*"
       identifiers = ["*"]
     }
-
-    condition {
-      test     = "IpAddress"
-      variable = "aws:SourceIp"
-
-      values = ["${var.ip_whitelist}"]
-    }
   }
 }
 
