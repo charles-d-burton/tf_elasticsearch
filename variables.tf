@@ -45,7 +45,7 @@ variable "kibana_role_arns" {
   default     = []
 }
 
-variable "es_log_role_arns" {
+variable "es_publish_role_arns" {
   type        = "list"
   description = "list of iam role arns that should be able to publish data to ES"
   default     = []
