@@ -20,6 +20,20 @@ resource "aws_elasticsearch_domain" "elk" {
   }
 }
 
+# cluster iam policy
+resource "aws_elasticsearch_domain_policy" "elk" {
+  count           = "${var.use_vpc ? 0 : 1}"
+  domain_name     = "${aws_elasticsearch_domain.elk.domain_name}"
+  access_policies = "${data.aws_iam_policy_document.elk_cluster.json}"
+}
+
+# iam role allowing full access to logging cluster
+resource "aws_iam_role" "logger" {
+  count              = "${var.use_vpc ? 0 : 1}"
+  name               = "elk-logger-${var.region}"
+  assume_role_policy = "${data.aws_iam_policy_document.logger.json}"
+}
+
 # elasticsearch 5.3 cluster in vpc
 resource "aws_elasticsearch_domain" "elk_vpc" {
   count                 = "${var.use_vpc ? 1 : 0}"
@@ -44,12 +58,14 @@ resource "aws_elasticsearch_domain" "elk_vpc" {
 
 # cluster iam policy
 resource "aws_elasticsearch_domain_policy" "elk" {
-  domain_name     = "${aws_elasticsearch_domain.elk.domain_name}"
-  access_policies = "${data.aws_iam_policy_document.elk_cluster.json}"
+  count           = "${var.use_vpc ? 1 : 0}"
+  domain_name     = "${aws_elasticsearch_domain.elk_vpc.domain_name}"
+  access_policies = "${data.aws_iam_policy_document.elk_cluster_vpc.json}"
 }
 
 # iam role allowing full access to logging cluster
 resource "aws_iam_role" "logger" {
+  count              = "${var.use_vpc ? 1 : 0}"
   name               = "elk-logger-${var.region}"
   assume_role_policy = "${data.aws_iam_policy_document.logger.json}"
 }
