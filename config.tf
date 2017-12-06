@@ -114,7 +114,7 @@ data "aws_iam_policy_document" "elk_cluster_vpc" {
       type = "AWS"
 
       identifiers = [
-        "${aws_iam_role.logger.arn}",
+        "${aws_iam_role.logger_vpc.arn}",
       ]
     }
 
