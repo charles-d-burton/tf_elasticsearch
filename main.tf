@@ -54,6 +54,10 @@ resource "aws_elasticsearch_domain" "elk_vpc" {
     volume_type = "${var.volume_type}"
     volume_size = "${var.volume_size}"
   }
+
+  vpc_options {
+    subnet_ids = "${var.subnets}"
+  }
 }
 
 # cluster iam policy
