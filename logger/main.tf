@@ -1,11 +1,3 @@
-data "terraform_remote_state" "cluster" {
-  backend = "atlas"
-
-  config {
-    name = "gaia-engineering/us-west-2_es_logs"
-  }
-}
-
 data "aws_iam_policy_document" "log_to_es" {
   statement {
     actions = [
@@ -74,8 +66,8 @@ data "archive_file" "cw_to_es_lambda" {
   depends_on  = ["aws_iam_policy.log_to_es_policy"]
 }
 
-resource "aws_s3_bucket" "gaia_functions" {
-  bucket = "gaia-${var.env}-${var.region}-logger"
+resource "aws_s3_bucket" "functions" {
+  bucket = "${var.env}-${var.region}-logger"
   acl    = "private"
 
   //depends_on = ["archive_file.cw_to_es_lambda"]
@@ -83,14 +75,14 @@ resource "aws_s3_bucket" "gaia_functions" {
 
 resource "aws_s3_bucket_object" "cw_to_es_lambda" {
   key    = "cw-to-es.zip"
-  bucket = "${aws_s3_bucket.gaia_functions.id}"
+  bucket = "${aws_s3_bucket.functions.id}"
   source = "${path.module}/cw-to-es.zip"
   etag   = "${data.archive_file.cw_to_es_lambda.output_md5}"
 }
 
 resource "aws_lambda_function" "cw_to_es" {
   function_name = "cw-to-es"
-  s3_bucket     = "${aws_s3_bucket.gaia_functions.id}"
+  s3_bucket     = "${aws_s3_bucket.functions.id}"
   s3_key        = "${aws_s3_bucket_object.cw_to_es_lambda.id}"
   role          = "${aws_iam_role.log_to_es_role.arn}"
   handler       = "cw-to-es.handler"
@@ -100,9 +92,7 @@ resource "aws_lambda_function" "cw_to_es" {
 
   environment {
     variables = {
-      ES_DOMAIN = "${data.terraform_remote_state.cluster.domain_endpoint}"
+      ES_DOMAIN = "${var.domain_endpoint}"
     }
   }
-
-  //assume_role_policy = 
 }
