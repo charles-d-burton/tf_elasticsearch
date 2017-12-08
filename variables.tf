@@ -1,6 +1,6 @@
 variable "elasticsearch_version" {
   description = "The version of AWS supported ES to use"
-  default     = "6.0"
+  default     = "5.5"
 }
 
 variable "dedicated_master_count" {
