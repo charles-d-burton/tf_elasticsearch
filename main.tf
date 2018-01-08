@@ -25,6 +25,10 @@ resource "aws_elasticsearch_domain_policy" "elk" {
   count           = "${var.use_vpc ? 0 : 1}"
   domain_name     = "${aws_elasticsearch_domain.elk.domain_name}"
   access_policies = "${data.aws_iam_policy_document.elk_cluster.json}"
+
+  lifecycle {
+    ignore_changes = ["access_policies"]
+  }
 }
 
 # iam role allowing full access to logging cluster
