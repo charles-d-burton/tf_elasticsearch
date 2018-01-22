@@ -67,7 +67,7 @@ resource "aws_elasticsearch_domain" "elk_vpc" {
 
 #For VPC clusters, use a security group to control access
 resource "aws_security_group" "vpc_security_group" {
-  name        = "tf-${aws_elasticsearch_domain.elk_vpc.domain_name}"
+  name        = "tf-${var.domain_name}"
   description = "Allow inbound traffic to ES"
   vpc_id      = "${var.vpc_id}"
 
