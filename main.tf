@@ -34,7 +34,7 @@ resource "aws_elasticsearch_domain_policy" "elk" {
 # iam role allowing full access to logging cluster
 resource "aws_iam_role" "logger" {
   count              = "${var.use_vpc ? 0 : 1}"
-  name               = "elk-logger-${var.region}"
+  name               = "es-${aws_elasticsearch_domain.elk_vpc.domain_name}"
   assume_role_policy = "${data.aws_iam_policy_document.logger.json}"
 }
 
@@ -67,7 +67,7 @@ resource "aws_elasticsearch_domain" "elk_vpc" {
 
 #For VPC clusters, use a security group to control access
 resource "aws_security_group" "vpc_security_group" {
-  name        = "tf-vpc-elasticsearch"
+  name        = "tf-${aws_elasticsearch_domain.elk_vpc.domain_name}"
   description = "Allow inbound traffic to ES"
   vpc_id      = "${var.vpc_id}"
 
@@ -89,6 +89,6 @@ resource "aws_elasticsearch_domain_policy" "elk_vpc" {
 # iam role allowing full access to logging cluster
 resource "aws_iam_role" "logger_vpc" {
   count              = "${var.use_vpc ? 1 : 0}"
-  name               = "elk-logger-${var.region}"
+  name               = "es-logger-${aws_elasticsearch_domain.elk_vpc.domain_name}"
   assume_role_policy = "${data.aws_iam_policy_document.logger.json}"
 }
