@@ -13,5 +13,5 @@ output "domain_id" {
 }
 
 output "logger_role_arn" {
-  value = "${aws_iam_role.logger.arn}"
+  value = "${join("", aws_iam_role.logger.*.arn)}"
 }
