@@ -1,7 +1,3 @@
-provider "aws" {
-  region = "${var.region}"
-}
-
 # cluster policy document
 data "aws_iam_policy_document" "elk_cluster" {
   count = "${var.use_vpc ? 0 : 1}"
