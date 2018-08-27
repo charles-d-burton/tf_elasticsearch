@@ -44,11 +44,6 @@ data "aws_iam_policy_document" "elk_cluster" {
       "es:ESHttpHead",
     ]
 
-    principals {
-      type        = "AWS"
-      identifiers = ["${compact(concat(var.kibana_role_arns, list(format("%s%s",aws_elasticsearch_domain.elk.arn, "/*"))))}"]
-    }
-
     resources = [
       "${aws_elasticsearch_domain.elk.arn}/*",
     ]
@@ -125,11 +120,6 @@ data "aws_iam_policy_document" "elk_cluster_vpc" {
       "es:ESHttpGet",
       "es:ESHttpHead",
     ]
-
-    principals {
-      type        = "AWS"
-      identifiers = ["${compact(concat(var.kibana_role_arns, list(format("%s%s",aws_elasticsearch_domain.elk.arn, "/*"))))}"]
-    }
 
     resources = [
       "${aws_elasticsearch_domain.elk_vpc.arn}/*",
