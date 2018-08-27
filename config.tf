@@ -40,17 +40,6 @@ data "aws_iam_policy_document" "elk_cluster" {
 
   statement {
     actions = [
-      "es:ESHttpGet",
-      "es:ESHttpHead",
-    ]
-
-    resources = [
-      "${aws_elasticsearch_domain.elk.arn}/*",
-    ]
-  }
-
-  statement {
-    actions = [
       "es:ESHttp*",
     ]
 
@@ -112,17 +101,6 @@ data "aws_iam_policy_document" "elk_cluster_vpc" {
     resources = [
       "${aws_elasticsearch_domain.elk_vpc.arn}/*",
       "${aws_elasticsearch_domain.elk_vpc.arn}",
-    ]
-  }
-
-  statement {
-    actions = [
-      "es:ESHttpGet",
-      "es:ESHttpHead",
-    ]
-
-    resources = [
-      "${aws_elasticsearch_domain.elk_vpc.arn}/*",
     ]
   }
 
