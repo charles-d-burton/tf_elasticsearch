@@ -77,6 +77,10 @@ resource "aws_security_group" "vpc_security_group" {
     protocol    = "-1"
     cidr_blocks = ["${var.ip_whitelist}"]
   }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 # cluster iam policy
