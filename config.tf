@@ -46,7 +46,7 @@ data "aws_iam_policy_document" "elk_cluster" {
 
     principals {
       type        = "AWS"
-      identifiers = "${var.kibana_role_arns}"
+      identifiers = ["${var.kibana_role_arns}"]
     }
 
     resources = [
@@ -128,7 +128,7 @@ data "aws_iam_policy_document" "elk_cluster_vpc" {
 
     principals {
       type        = "AWS"
-      identifiers = "${var.kibana_role_arns}"
+      identifiers = ["${var.kibana_role_arns}"]
     }
 
     resources = [
