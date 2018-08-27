@@ -46,7 +46,7 @@ data "aws_iam_policy_document" "elk_cluster" {
 
     principals {
       type        = "AWS"
-      identifiers = ["${var.kibana_role_arns}"]
+      identifiers = "${compact(concat(var.kibana_role_arns, aws_elasticsearch_domain.elk.arn))}"
     }
 
     resources = [
